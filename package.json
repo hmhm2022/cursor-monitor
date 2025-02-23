@@ -1,0 +1,39 @@
+{
+    "publisher": "john-doe",
+    "name": "crazy-cursor",
+    "displayName": "Cursor Monitor",
+    "description": "Get detailed insights into your Cursor IDE usage and subscription status",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.78.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished",
+        "onCommand:crazy-cursor.showMenu"
+    ],
+    "main": "./out/extension.js",
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "lint": "eslint src --ext ts",
+        "postinstall": "npm run compile"
+    },
+    "dependencies": {
+        "axios": "^1.7.9",
+        "sqlite3": "^5.1.7"
+    },
+    "devDependencies": {
+        "@types/node": "^14.x.x",
+        "@types/sqlite3": "^3.1.11",
+        "@types/vscode": "^1.78.0",
+        "typescript": "^4.x.x"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/你的用户名/仓库名.git"
+    }
+}
