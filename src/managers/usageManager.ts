@@ -1,9 +1,8 @@
-// import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
 import * as sqlite3 from 'sqlite3';
 import axios from 'axios';
-import { UsageData, StripeProfile, Auth0UserInfo } from '../types';
+import { UsageData, StripeProfile, Auth0UserInfo, ApiError } from '../types';
 
 interface DbRow {
     value: string;
@@ -70,6 +69,16 @@ export class UsageManager {
         }
     }
 
+    private handleApiError(error: unknown, operation: string): never {
+        const err = error as ApiError;
+        const errorMessage = err.response
+            ? `状态码: ${err.response.status}, 响应: ${JSON.stringify(err.response.data)}`
+            : err.message || String(error);
+        
+        console.error(`${operation} 详细错误:`, errorMessage);
+        throw new Error(`${operation}: ${errorMessage}`);
+    }
+
     async getUsage(token: string): Promise<UsageData> {
         try {
             const userId = this.extractUserId(token);
@@ -95,13 +104,7 @@ export class UsageManager {
                 max_basic_usage: response.data['gpt-3.5-turbo']?.maxRequestUsage || 999
             };
         } catch (error) {
-            const err = error as Error | { response?: { status: number; data: any } };
-            const errorMessage = 'response' in err && err.response
-                ? `状态码: ${err.response.status}, 响应: ${JSON.stringify(err.response.data)}`
-                : err instanceof Error ? err.message : String(err);
-            
-            console.error('获取使用量详细错误:', errorMessage);
-            throw new Error(`获取使用量失败: ${errorMessage}`);
+            this.handleApiError(error, '获取使用量失败');
         }
     }
 
@@ -131,13 +134,7 @@ export class UsageManager {
                 updated_at: response.data.updated_at
             };
         } catch (error) {
-            const err = error as Error | { response?: { status: number; data: any } };
-            const errorMessage = 'response' in err && err.response
-                ? `状态码: ${err.response.status}, 响应: ${JSON.stringify(err.response.data)}`
-                : err instanceof Error ? err.message : String(err);
-            
-            console.error('获取用户信息失败:', errorMessage);
-            throw new Error(`获取用户信息失败: ${errorMessage}`);
+            this.handleApiError(error, '获取用户信息失败');
         }
     }
 
@@ -159,13 +156,8 @@ export class UsageManager {
                 membershipType: response.data.membershipType,
                 daysRemainingOnTrial: response.data.daysRemainingOnTrial
             };
-        } catch (error: any) {
-            const errorMessage = error.response 
-                ? `状态码: ${error.response.status}, 响应: ${JSON.stringify(error.response.data)}`
-                : error.message;
-            
-            console.error('获取订阅信息失败:', errorMessage);
-            throw new Error(`获取订阅信息失败: ${errorMessage}`);
+        } catch (error) {
+            this.handleApiError(error, '获取订阅信息失败');
         }
     }
 } 

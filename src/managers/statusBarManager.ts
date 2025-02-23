@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-// import { UsageData, Auth0UserInfo, StripeProfile } from '../types';
 import { UsageManager } from './usageManager';
 
 export class StatusBarManager implements vscode.Disposable {

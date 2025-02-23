@@ -28,4 +28,4 @@ export interface ApiError {
         data: any;
     };
     message?: string;
-} 
+}
