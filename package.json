@@ -15,18 +15,6 @@
         "onCommand:crazy-cursor.showMenu"
     ],
     "main": "./out/extension.js",
-    "contributes": {
-        "configuration": {
-            "title": "Cursor Monitor",
-            "properties": {
-                "crazyCursor.useCursorNightly": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "使用 Cursor Nightly 版本的数据目录而不是标准版本"
-                }
-            }
-        }
-    },
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",

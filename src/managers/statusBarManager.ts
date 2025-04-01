@@ -41,19 +41,10 @@ export class StatusBarManager implements vscode.Disposable {
 
     async showMenu() {
         try {
-            // 首先检查数据库文件是否存在
-            const dbCheck = await this.usageManager.checkDbExists();
-            if (!dbCheck.exists) {
-                // 数据库文件检查失败会在 getCurrentToken 方法中处理
-                // 我们这里只需直接调用并让它处理错误
-                await this.usageManager.getCurrentToken();
-                return; // 如果数据库不存在，在 getCurrentToken 中已经显示了错误信息，直接返回
-            }
-            
             // 获取最新数据
             const token = await this.usageManager.getCurrentToken();
             if (!token) {
-                vscode.window.showWarningMessage('未找到有效的 token，请先确保已登录 Cursor');
+                vscode.window.showWarningMessage('未找到有效的 token，请先更新 Token');
                 return;
             }
 
@@ -62,10 +53,6 @@ export class StatusBarManager implements vscode.Disposable {
                 this.usageManager.getAuth0UserInfo(token),
                 this.usageManager.getStripeProfile(token)
             ]);
-
-            // 获取当前配置
-            const config = vscode.workspace.getConfiguration('crazyCursor');
-            const useCursorNightly = config.get<boolean>('useCursorNightly', false);
 
             // 创建信息显示项
             const infoItems: vscode.QuickPickItem[] = [
@@ -117,10 +104,6 @@ export class StatusBarManager implements vscode.Disposable {
                     label: "$(sync) 刷新使用量",
                     description: "刷新 Cursor 使用量统计"
                 },
-                {
-                    label: useCursorNightly ? "$(arrow-swap) 切换到 Cursor 正式版" : "$(arrow-swap) 切换到 Cursor Nightly",
-                    description: useCursorNightly ? "当前使用 Cursor Nightly 版本" : "当前使用 Cursor 正式版"
-                },
             ];
 
             // 显示 QuickPick
@@ -146,26 +129,7 @@ export class StatusBarManager implements vscode.Disposable {
             case "$(sync) 刷新使用量":
                 await this.showMenu(); // 重新显示菜单以刷新数据
                 break;
-            case "$(arrow-swap) 切换到 Cursor Nightly":
-                await this.toggleCursorVersion(true);
-                break;
-            case "$(arrow-swap) 切换到 Cursor 正式版":
-                await this.toggleCursorVersion(false);
-                break;
         }
-    }
-
-    private async toggleCursorVersion(useNightly: boolean) {
-        // 更新配置
-        await vscode.workspace.getConfiguration('crazyCursor').update('useCursorNightly', useNightly, true);
-        
-        // 显示通知
-        vscode.window.showInformationMessage(
-            useNightly ? '已切换到 Cursor Nightly 版本' : '已切换到 Cursor 正式版'
-        );
-        
-        // 重新显示菜单
-        await this.showMenu();
     }
 
     dispose() {
