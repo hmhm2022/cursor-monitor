@@ -3,7 +3,7 @@
     "name": "cursor-monitor",
     "displayName": "Cursor Monitor",
     "description": "Get detailed insights into your Cursor IDE usage and subscription status",
-    "version": "0.0.3",
+    "version": "0.3.0",
     "engines": {
         "vscode": "^1.78.0"
     },

@@ -25,6 +25,7 @@ package-lock.json
 
 # 其他不需要的文件
 *.vsix
+vsix/**
 .git/**
 node_modules/.bin/**
 node_modules/**/test/**
@@ -36,3 +37,13 @@ node_modules/**/*.md
 node_modules/**/LICENSE*
 node_modules/**/CHANGELOG*
 node_modules/**/README*
+
+# GitHub CLI 相关文件
+gh.msi
+gh.zip
+bin/**
+
+# 临时文件
+*.txt
+commit_msg.txt
+tag_msg.txt
