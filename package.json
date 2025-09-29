@@ -1,9 +1,9 @@
 {
-    "publisher": "john-doe",
-    "name": "crazy-cursor",
+    "publisher": "cursor-monitor",
+    "name": "cursor-monitor",
     "displayName": "Cursor Monitor",
     "description": "Get detailed insights into your Cursor IDE usage and subscription status",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "engines": {
         "vscode": "^1.78.0"
     },
@@ -11,15 +11,21 @@
         "Other"
     ],
     "activationEvents": [
-        "onStartupFinished",
-        "onCommand:crazy-cursor.showMenu"
+        "onStartupFinished"
     ],
     "main": "./out/extension.js",
     "contributes": {
+        "commands": [
+            {
+                "command": "cursor-monitor.showMenu",
+                "title": "Show Cursor Monitor",
+                "category": "Cursor Monitor"
+            }
+        ],
         "configuration": {
             "title": "Cursor Monitor",
             "properties": {
-                "crazyCursor.useCursorNightly": {
+                "cursorMonitor.useCursorNightly": {
                     "type": "boolean",
                     "default": false,
                     "description": "使用 Cursor Nightly 版本的数据目录而不是标准版本"
@@ -34,6 +40,7 @@
         "lint": "eslint src --ext ts",
         "postinstall": "npm run compile"
     },
+    "license": "MIT",
     "dependencies": {
         "axios": "^1.7.9",
         "sqlite3": "^5.1.7"

@@ -1,0 +1,38 @@
+# VSCode 测试和配置
+.vscode/**
+.vscode-test/**
+.gitignore
+
+# 源代码（已编译到 out 目录）
+src/**
+tsconfig.json
+
+# 文档和测试文件
+*.md
+test/**
+*.test.js
+*.test.ts
+
+# 开发依赖和配置
+.eslintrc.json
+.prettierrc
+.yarnrc
+yarn.lock
+package-lock.json
+
+# 构建输出的源映射（调试用，生产环境不需要）
+**/*.map
+
+# 其他不需要的文件
+*.vsix
+.git/**
+node_modules/.bin/**
+node_modules/**/test/**
+node_modules/**/tests/**
+node_modules/**/example/**
+node_modules/**/examples/**
+node_modules/**/docs/**
+node_modules/**/*.md
+node_modules/**/LICENSE*
+node_modules/**/CHANGELOG*
+node_modules/**/README*
